@@ -2,7 +2,7 @@ import "./styles.css";
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 
-const TagInputBox = ({ className, items, setItems, validator, autoValidate, label, separators }) => {
+const TagInputBox = ({ className, items, setItems, validator, autoValidate, label, separators, forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
     const [pendingUpdate, setPendingUpdate] = useState(false);
@@ -14,6 +14,8 @@ const TagInputBox = ({ className, items, setItems, validator, autoValidate, labe
 
     // If no separators are provided, the default is a comma
     separators = separators || [","];
+
+    forceLowerCase = forceLowerCase || false;
 
     const inputRef = useRef(null);
 
@@ -121,7 +123,11 @@ const TagInputBox = ({ className, items, setItems, validator, autoValidate, labe
     const handleInputChange = (newInput, overridePending = false) => {
         let processForSplit = true;
 
-        newInput = newInput.toLowerCase().trim();
+        newInput = newInput.trim();
+
+        if (forceLowerCase) {
+            newInput = newInput.toLowerCase();
+        }
 
         // If the last character is a comma, set override pending
         if (newInput[newInput.length - 1] === ",") {
@@ -229,7 +235,8 @@ TagInputBox.propTypes = {
     validator: PropTypes.func,
     autoValidate: PropTypes.bool,
     label: PropTypes.string,
-    separators: PropTypes.array
+    separators: PropTypes.array,
+    forceLowerCase: PropTypes.bool
 }
 
 export default TagInputBox;

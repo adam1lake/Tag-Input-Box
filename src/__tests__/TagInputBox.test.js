@@ -29,6 +29,7 @@ describe("tag input box", () => {
                 validator={ () => {} }
                 autoValidate={ true }
                 label={ label }
+                forceLowerCase={ true }
             />
         );
 
@@ -423,7 +424,7 @@ describe("tag input box", () => {
 
     it("handles different separators/splitters", () => {
         const separators = [",", "&", ";", ""];
-        const testString = sampleValidItems.map((item, idx) => item + separators[idx]).join("");
+        const testString = sampleRandomItems.map((item, idx) => item + separators[idx]).join("");
 
         // testValue will store the array of emails returned by the on change function
         let testValue = [];
@@ -432,9 +433,8 @@ describe("tag input box", () => {
             <TagInputBox
                 items={ [] }
                 setItems={ e => testValue = e }
-                validator={ sampleValidator }
                 autoValidate={ true }
-                separators={ separators.slice(1, 4) }
+                separators={ separators.slice(0, 3) }
             />
         );
 
@@ -443,8 +443,11 @@ describe("tag input box", () => {
 
         // Enters the string list of emails into the input
         fireEvent.change(tagInputElement, { target: { value: testString } });
+        console.log(testString)
 
         // Checks that the new array of emails includes the new email
-        expect(testValue).toEqual(sampleValidItems);
+        expect(testValue).toEqual(sampleRandomItems);
     });
+
+    // TODO - add case tests
 });
