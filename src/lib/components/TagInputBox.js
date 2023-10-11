@@ -123,19 +123,17 @@ const TagInputBox = ({ className, items, setItems, validator, autoValidate, labe
     const handleInputChange = (newInput, overridePending = false) => {
         let processForSplit = true;
 
-        newInput = newInput.trim();
-
         if (forceLowerCase) {
             newInput = newInput.toLowerCase();
         }
 
         // If the last character is a comma, set override pending
-        if (newInput[newInput.length - 1] === ",") {
+        if (newInput.trim()[newInput.length - 1] === ",") {
             overridePending = true;
         }
 
         // If the input is unchanged, don't split
-        if (!overridePending && newInput === textInput) {
+        if (!overridePending && newInput.trim() === textInput) {
             processForSplit = false;
         }
 
@@ -165,10 +163,9 @@ const TagInputBox = ({ className, items, setItems, validator, autoValidate, labe
         // Finds valid items, and adds them to the validItems array
         // Invalid items are left in remaining input and will stay in the input box
         const remainingInput = entries.flatMap(item => {
-            item = item.trim();
-            if (validator(item)) {
+            if (validator(item.trim())) {
                 // Adds to validItems if this item is not already in the list
-                !items.includes(item) && validItems.push(item);
+                !items.includes(item) && validItems.push(item.trim());
                 // Removes from the input
                 return [];
             }

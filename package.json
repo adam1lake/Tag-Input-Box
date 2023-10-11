@@ -1,16 +1,23 @@
 {
-  "name": "taginputbox",
+  "name": "tag-input-box",
   "version": "0.1.0",
-  "private": true,
+  "author": "adam1lake",
+  "keywords": ["react", "input", "tag", "tags", "list"],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": ["dist", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam1lake/Tag-Input-Box.git"
+  },
   "dependencies": {
     "prop-types": "^15.8.1",
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "react-scripts start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "rm -rf dist && cross-env NODE_ENV=production babel src/lib --out-dir dist --copy-files"
   },
   "eslintConfig": {
     "extends": [
@@ -32,10 +39,16 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.22.20",
     "@babel/preset-react": "^7.22.15",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "cross-env": "^7.0.3",
+    "install": "^0.13.0",
+    "npm": "^10.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
