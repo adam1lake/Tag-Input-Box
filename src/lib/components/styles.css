@@ -1,0 +1,61 @@
+.Label {
+    margin: 5px;
+    font-size: 13px;
+    width: fit-content;
+}
+
+.TagInputBox {
+    width: 300px;
+    display: flex;
+    font-family: Calibri, sans-serif;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 10px 10px;
+    justify-content: space-between;
+    overflow-x: auto;
+    cursor: text;
+}
+
+.TagInputBox > div {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+}
+
+.SelectedItem, .UnselectedItem {
+    cursor: pointer;
+    width: min-content;
+    background: #ececec;
+    border-radius: 5px;
+    padding: 3px 8px;
+    margin-left: 2px;
+}
+
+.LastItem {
+    margin-right: 10px;
+}
+
+.SelectedItem {
+    background: darkgray !important;
+    color: white;
+}
+
+.TagInputBox input {
+    background: none;
+    min-width: 100px;
+    flex: 1 1 100px;
+    border: none;
+    outline: none;
+    padding-top: 5px;
+}
+
+.TagInputBox > button {
+    cursor: pointer;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
+    border: none;
+}
