@@ -450,4 +450,5 @@ describe("tag input box", () => {
     });
 
     // TODO - add case tests
+    //  keyboard shortcut tests
 });

@@ -1,17 +1,20 @@
 import TagInputBox from "./lib/components/TagInputBox";
 import { useState } from "react";
 
+const isEmailValid = input => /^[^@]+@[^@]+\.[^@]+$/.test(input);
+
 function App() {
-  const [items, setItems] = useState([]);
+  const [emails, setEmails] = useState([]);
+
   return (
     <div className="App">
-      <TagInputBox
-          setItems={ val => setItems(val) }
-          validator={ item => item.includes(".com") }
-          items={ items }
-          label="Emails:"
-          autoSubmit={ true }
-      />
+        <TagInputBox
+            items={ emails }
+            setItems={ setEmails }
+            validator={ isEmailValid }
+            label="Emails:"
+            autoSubmit={ true }
+        />
     </div>
   );
 }
