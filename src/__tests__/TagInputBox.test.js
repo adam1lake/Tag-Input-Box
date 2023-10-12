@@ -27,7 +27,7 @@ describe("tag input box", () => {
                 items={ sampleValidItems }
                 setItems={ () => {} }
                 validator={ () => {} }
-                autoValidate={ true }
+                autoSubmit={ true }
                 label={ label }
                 forceLowerCase={ true }
             />
@@ -69,7 +69,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -93,7 +93,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ false }
+                autoSubmit={ false }
             />
         );
 
@@ -117,7 +117,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -144,7 +144,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ false }
+                autoSubmit={ false }
             />
         );
 
@@ -171,7 +171,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -195,7 +195,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ false }
+                autoSubmit={ false }
             />
         );
 
@@ -216,7 +216,7 @@ describe("tag input box", () => {
                 items={ sampleValidItems.slice(1, 4) }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -237,7 +237,7 @@ describe("tag input box", () => {
                 items={ [] }
                 setItems={ setItems }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -261,7 +261,7 @@ describe("tag input box", () => {
                 items={ [] }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -309,7 +309,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ false }
+                autoSubmit={ false }
             />
         );
 
@@ -343,7 +343,7 @@ describe("tag input box", () => {
                 items={ startingEmails }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ false }
+                autoSubmit={ false }
             />
         );
 
@@ -374,7 +374,7 @@ describe("tag input box", () => {
                 items={ [startingEmail] }
                 setItems={ e => testValue = e }
                 validator={ sampleValidator }
-                autoValidate={ true }
+                autoSubmit={ true }
             />
         );
 
@@ -433,7 +433,7 @@ describe("tag input box", () => {
             <TagInputBox
                 items={ [] }
                 setItems={ e => testValue = e }
-                autoValidate={ true }
+                autoSubmit={ true }
                 separators={ separators.slice(0, 3) }
             />
         );

@@ -2,7 +2,7 @@ import "./styles.css";
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 
-const TagInputBox = ({ className, items, setItems, validator, autoValidate, label, separators, forceLowerCase }) => {
+const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label, separators, forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
     const [pendingUpdate, setPendingUpdate] = useState(false);
@@ -143,7 +143,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoValidate, labe
         }
 
         // If not set to auto validate and override pending is not set, don't split
-        if (!overridePending && !autoValidate) {
+        if (!overridePending && !autoSubmit) {
             processForSplit = false;
         }
 
@@ -230,7 +230,7 @@ TagInputBox.propTypes = {
     items: PropTypes.array.isRequired,
     setItems: PropTypes.func.isRequired,
     validator: PropTypes.func,
-    autoValidate: PropTypes.bool,
+    autoSubmit: PropTypes.bool,
     label: PropTypes.string,
     separators: PropTypes.array,
     forceLowerCase: PropTypes.bool

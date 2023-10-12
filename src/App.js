@@ -10,7 +10,7 @@ function App() {
           validator={ item => item.includes(".com") }
           items={ items }
           label="Emails:"
-          autoValidate={ true }
+          autoSubmit={ true }
       />
     </div>
   );
