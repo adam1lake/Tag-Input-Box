@@ -6,6 +6,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
     const [pendingUpdate, setPendingUpdate] = useState(false);
+    const [inputLock, setInputLock] = useState(false);
 
     // If no validator is provided, set it as a function that always returns true
     if (typeof validator === "undefined") {
@@ -15,8 +16,6 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
     // If no separators are provided, the default is a comma
     separators = separators || [","];
 
-    forceLowerCase = forceLowerCase || false;
-
     const inputRef = useRef(null);
 
     // Deletes all selected items
@@ -25,7 +24,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
         setSelectedItems([]);
     }
 
-    // Called on keyup on the input box
+    // Called on key down on the input box
     const handleKeyPress = e => {
         const key = e.key;
 
@@ -45,6 +44,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
                 } else {
                     // If CTRL is not being held, make the last item editable
                     setEditableItem(items[items.length - 1]);
+                    setInputLock(true);
                 }
             }
         } else if (key === "Enter") {
@@ -53,8 +53,6 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
         } else if (key === "Delete" && textInput === "") {
             // If delete is clicked and there is no input, remove the selected items
             deleteAllSelected();
-        } else {
-            handleInputChange(textInput);
         }
     }
 
@@ -121,6 +119,12 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
 
     // Called on change to the input box
     const handleInputChange = (newInput, overridePending = false) => {
+        // If input lock is set, clear it and do nothing
+        if (inputLock) {
+            setInputLock(false);
+            return;
+        }
+
         let processForSplit = true;
 
         if (forceLowerCase) {
@@ -146,16 +150,27 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
         if (!overridePending && !autoSubmit) {
             processForSplit = false;
         }
+        console.log("processing onchange")
+
+        console.log(newInput)
+        console.log(textInput)
+        if (newInput === "" && textInput !== "") {
+            processForSplit = false;
+        }
+
+        console.log(processForSplit)
 
         // If the item should not be processed to split up emails, update the text input then do nothing else
         if (!processForSplit) {
             setTextInput(newInput);
+            console.log("do nothing else")
             return;
         }
+        console.log("process")
 
         setPendingUpdate(false);
 
-        // Splits on commas
+        // Splits on the separators
         const entries = newInput.split(new RegExp(separators.join("|")));
 
         const validItems = [];
@@ -208,7 +223,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
                         type="text"
                         ref={ inputRef }
                         value={ textInput }
-                        onKeyUp={ e => handleKeyPress(e) }
+                        onKeyDown={ e => handleKeyPress(e) }
                         onChange={ e => handleInputChange(e.target.value) }
                         data-testid="tag-input-box"
                     />
