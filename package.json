@@ -1,6 +1,6 @@
 {
   "name": "tag-input-box",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "adam1lake",
   "keywords": ["react", "input", "tag", "tags", "list"],
   "main": "dist/index.js",
