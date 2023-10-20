@@ -11,7 +11,6 @@ these actions with ease.
 | items          | The state variable for the list of tags.                                             | array    | Yes      | -             |
 | setItems       | The set function for the items state.                                                | function | Yes      | -             |
 | validator      | Used to perform validation on the inputs before adding them as tags.                 | function | No       | `() => true`  |
-| autoSubmit     | Determines if the input should be automatically submitted when a separator is typed. | boolean  | No       | `false`       |
 | label          | The text label displayed above the input.                                            | string   | No       | `false`       |
 | separators     | A list of acceptable separators between tags.                                        | array    | No       | `[","]`       |
 | forceLowerCase | Determines if tags are set to lower case when submitted.                             | boolean  | No       | `false`       |
@@ -55,8 +54,7 @@ The input box will initially render as empty.
 
 ![Email Input 1](screenshots/1.png "Email Input 1")
 
-You can type an email into the box. It will **not** be automatically submitted, as we didn't provide a value for the 
-`autoSubmit` prop which therefore defaults to **false**.
+You can type an email into the box.
 
 ![Email Input 2](screenshots/2.png "Email Input 2")
 

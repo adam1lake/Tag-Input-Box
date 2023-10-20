@@ -1,11 +1,11 @@
 import "./styles.css";
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
+import { regexEsc } from "../../utils";
 
-const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label, separators, forceLowerCase }) => {
+const TagInputBox = ({ className, items, setItems, validator, label, separators, forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
-    const [pendingUpdate, setPendingUpdate] = useState(false);
     const [inputLock, setInputLock] = useState(false);
 
     // If no validator is provided, set it as a function that always returns true
@@ -15,6 +15,8 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
 
     // If no separators are provided, the default is a comma
     separators = separators || [","];
+
+    const splitterRegex = new RegExp(separators.map(char => regexEsc(char)).join("|"));
 
     const inputRef = useRef(null);
 
@@ -42,9 +44,11 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
                     }
 
                 } else {
-                    // If CTRL is not being held, make the last item editable
-                    setEditableItem(items[items.length - 1]);
-                    setInputLock(true);
+                    if (items.length > 0) {
+                        // If CTRL is not being held, make the last item editable
+                        setEditableItem(items[items.length - 1]);
+                        setInputLock(true);
+                    }
                 }
             }
         } else if (key === "Enter") {
@@ -57,10 +61,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
     }
 
     // Makes the specified item available for editing by moving it into the input box
-    const setEditableItem = (value) => {
-        // Sets the item to be pending update
-        setPendingUpdate(true);
-
+    const setEditableItem = value => {
         // Sets the input box to this item
         setTextInput(value);
 
@@ -118,60 +119,35 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
     }
 
     // Called on change to the input box
-    const handleInputChange = (newInput, overridePending = false) => {
+    const handleInputChange = (newInput, forceProcess = false) => {
         // If input lock is set, clear it and do nothing
         if (inputLock) {
             setInputLock(false);
             return;
         }
 
-        let processForSplit = true;
-
         if (forceLowerCase) {
             newInput = newInput.toLowerCase();
         }
 
-        // If the last character is a comma, set override pending
-        if (newInput.trim()[newInput.length - 1] === ",") {
-            overridePending = true;
+        let processForSplit = forceProcess;
+
+        // If forceProcess is not set, proceed to check conditions for processing the input
+        if (!processForSplit) {
+            // If the last character is a separator, we should process the input
+            if (separators.includes(newInput.trim()[newInput.length - 1])) {
+                processForSplit = true;
+            }
         }
 
-        // If the input is unchanged, don't split
-        if (!overridePending && newInput.trim() === textInput) {
-            processForSplit = false;
-        }
-
-        // If this item is selected and override pending is not set, don't split
-        if (!overridePending && pendingUpdate) {
-            processForSplit = false;
-        }
-
-        // If not set to auto validate and override pending is not set, don't split
-        if (!overridePending && !autoSubmit) {
-            processForSplit = false;
-        }
-        console.log("processing onchange")
-
-        console.log(newInput)
-        console.log(textInput)
-        if (newInput === "" && textInput !== "") {
-            processForSplit = false;
-        }
-
-        console.log(processForSplit)
-
-        // If the item should not be processed to split up emails, update the text input then do nothing else
+        // If the item should not be processed, update the text input state then do nothing else
         if (!processForSplit) {
             setTextInput(newInput);
-            console.log("do nothing else")
             return;
         }
-        console.log("process")
-
-        setPendingUpdate(false);
 
         // Splits on the separators
-        const entries = newInput.split(new RegExp(separators.join("|")));
+        const entries = newInput.split(splitterRegex).filter(item => item !== "");
 
         const validItems = [];
 
@@ -188,7 +164,7 @@ const TagInputBox = ({ className, items, setItems, validator, autoSubmit, label,
         });
         if (validItems.length > 0) {
             // Updates the items state provided by the parent
-            setItems([...items, ...validItems.filter(item => !items.includes(item))]);
+            setItems([...items, ...validItems]);
         }
         // Updates the text input removing any saved items
         setTextInput(remainingInput.join(","));
@@ -245,7 +221,6 @@ TagInputBox.propTypes = {
     items: PropTypes.array.isRequired,
     setItems: PropTypes.func.isRequired,
     validator: PropTypes.func,
-    autoSubmit: PropTypes.bool,
     label: PropTypes.string,
     separators: PropTypes.array,
     forceLowerCase: PropTypes.bool

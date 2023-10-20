@@ -13,7 +13,6 @@ function App() {
             setItems={ setEmails }
             validator={ isEmailValid }
             label="Emails:"
-            autoSubmit={ true }
         />
     </div>
   );
