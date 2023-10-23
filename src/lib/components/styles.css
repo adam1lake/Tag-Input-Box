@@ -24,7 +24,7 @@
     cursor: text;
 }
 
-.TIB_Tag {
+.TIB_InputContainer > div {
     display: flex;
     flex-wrap: wrap;
     font-size: 16px;
@@ -37,6 +37,7 @@
     border-radius: 5px;
     padding: 3px 8px;
     margin-left: 2px;
+    font-size: 16px;
 }
 
 .TIB_LastItem {

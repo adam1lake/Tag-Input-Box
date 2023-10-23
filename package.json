@@ -1,6 +1,6 @@
 {
   "name": "tag-input-box",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "author": "adam1lake",
   "publishConfig": {
     "access": "public"
