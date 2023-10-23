@@ -1,11 +1,18 @@
-.Label {
-    margin: 5px;
-    font-size: 13px;
-    width: fit-content;
+.TIB_Container {
+    display: flex;
+    flex-direction: column;
 }
 
-.TagInputBox {
-    width: 400px;
+.TIB_Container_Reverse {
+    flex-direction: column-reverse;
+}
+
+.TIB_Label {
+    margin: 5px;
+    font-size: 13px;
+}
+
+.TIB_InputContainer {
     display: flex;
     font-family: Calibri, sans-serif;
     align-items: center;
@@ -17,13 +24,13 @@
     cursor: text;
 }
 
-.TagInputBox > div {
+.TIB_Tag {
     display: flex;
     flex-wrap: wrap;
     font-size: 16px;
 }
 
-.SelectedItem, .UnselectedItem {
+.TIB_SelectedItem, .TIB_UnselectedItem {
     cursor: pointer;
     width: min-content;
     background: #ececec;
@@ -32,16 +39,16 @@
     margin-left: 2px;
 }
 
-.LastItem {
+.TIB_LastItem {
     margin-right: 10px;
 }
 
-.SelectedItem {
+.TIB_SelectedItem {
     background: darkgray !important;
     color: white;
 }
 
-.TagInputBox input {
+.TIB_Container input {
     background: none;
     min-width: 100px;
     flex: 1 1 100px;
@@ -50,7 +57,7 @@
     padding-top: 5px;
 }
 
-.TagInputBox > button {
+.TIB_XButton {
     cursor: pointer;
     background: none;
     display: flex;

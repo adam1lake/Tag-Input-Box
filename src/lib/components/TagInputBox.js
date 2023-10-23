@@ -166,7 +166,7 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
     if (!items || !setItems) return "";
 
     return (
-        <div className={ `TIB_Container ${ className }${ labelPosition === "bottom" ? " TIB_Container_Reverse" : "" }` }>
+        <div className={ `TIB_Container${ className ? ` ${ className }` : "" }${ labelPosition === "bottom" ? " TIB_Container_Reverse" : "" }` }>
             { typeof(label) !== "undefined" &&
                 <p
                     className="TIB_Label"

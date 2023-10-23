@@ -18,6 +18,7 @@ var TagInputBox = function TagInputBox(_ref) {
     setItems = _ref.setItems,
     validator = _ref.validator,
     label = _ref.label,
+    labelPosition = _ref.labelPosition,
     separators = _ref.separators,
     forceLowerCase = _ref.forceLowerCase;
   var _useState = (0, _react.useState)(""),
@@ -32,16 +33,6 @@ var TagInputBox = function TagInputBox(_ref) {
     _useState6 = (0, _slicedToArray2.default)(_useState5, 2),
     inputLock = _useState6[0],
     setInputLock = _useState6[1];
-
-  // If no validator is provided, set it as a function that always returns true
-  if (typeof validator === "undefined") {
-    validator = function validator() {
-      return true;
-    };
-  }
-
-  // If no separators are provided, the default is a comma
-  separators = separators || [","];
   var splitterRegex = new RegExp(separators.map(function (char) {
     return (0, _utils.regexEsc)(char);
   }).join("|"));
@@ -62,6 +53,7 @@ var TagInputBox = function TagInputBox(_ref) {
       // If backspace is clicked and there is no input
       if (textInput === "") {
         if (e.ctrlKey) {
+          // If CTRL is being held, remove the selected items
           // If CTRL is being held, remove the selected items
           if (selectedItems.length > 0) {
             // If items are selected, delete all the selected items
@@ -202,13 +194,15 @@ var TagInputBox = function TagInputBox(_ref) {
     // Updates the text input removing any saved items
     setTextInput(remainingInput.join(","));
   };
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-    children: [label && /*#__PURE__*/(0, _jsxRuntime.jsx)("p", {
-      className: "Label",
+  if (!items || !setItems) return "";
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    className: "TIB_Container".concat(className ? " ".concat(className) : "").concat(labelPosition === "bottom" ? " TIB_Container_Reverse" : ""),
+    children: [typeof label !== "undefined" && /*#__PURE__*/(0, _jsxRuntime.jsx)("p", {
+      className: "TIB_Label",
       "data-testid": "tag-input-label",
       children: label
     }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "TagInputBox".concat(className ? " ".concat(className) : ""),
+      className: "TIB_InputContainer",
       onClick: function onClick(e) {
         return handleContainerClick(e);
       },
@@ -219,7 +213,7 @@ var TagInputBox = function TagInputBox(_ref) {
             onClick: function onClick(e) {
               return handleItemClick(e, item);
             },
-            className: "".concat(selectedItems.includes(item) ? "SelectedItem" : "UnselectedItem").concat(idx === items.length - 1 ? " LastItem" : ""),
+            className: "TIB_Tag ".concat(selectedItems.includes(item) ? "TIB_SelectedItem" : "TIB_UnselectedItem").concat(idx === items.length - 1 ? " TIB_LastItem" : ""),
             "data-testid": "input-tag-".concat(idx + 1),
             children: item
           }, idx);
@@ -238,10 +232,21 @@ var TagInputBox = function TagInputBox(_ref) {
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
         onClick: handleCloseClick,
         "data-testid": "tag-clear-icon",
+        className: "TIB_XButton",
         children: "x"
       })]
     })]
   });
+};
+TagInputBox.defaultProps = {
+  className: "",
+  validator: function validator() {
+    return true;
+  },
+  label: undefined,
+  labelPosition: "bottom",
+  separators: [","],
+  forceLowerCase: false
 };
 TagInputBox.propTypes = {
   className: _propTypes.default.string,
@@ -249,6 +254,7 @@ TagInputBox.propTypes = {
   setItems: _propTypes.default.func.isRequired,
   validator: _propTypes.default.func,
   label: _propTypes.default.string,
+  labelPosition: _propTypes.default.oneOf(["top", "bottom"]),
   separators: _propTypes.default.array,
   forceLowerCase: _propTypes.default.bool
 };
