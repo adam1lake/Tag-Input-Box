@@ -2,7 +2,7 @@ import { render, screen, fireEvent, findByDisplayValue } from "@testing-library/
 import "@testing-library/jest-dom";
 import TagInputBox from "../lib/components/TagInputBox";
 import userEvent from "@testing-library/user-event";
-import { isEmailValid } from "../utils";
+import { isEmailValid } from "../lib/utils";
 
 const shuffle = unshuffled => unshuffled
     .map(value => ({ value, sort: Math.random() }))

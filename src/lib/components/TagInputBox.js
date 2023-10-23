@@ -1,7 +1,7 @@
 import "./styles.css";
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
-import { regexEsc } from "../../utils";
+import { regexEsc } from "../utils";
 
 const TagInputBox = ({ className, items, setItems, validator, label, separators, forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");

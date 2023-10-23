@@ -10,7 +10,7 @@ var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/sli
 require("./styles.css");
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _react = require("react");
-var _utils = require("../../utils");
+var _utils = require("../utils");
 var _jsxRuntime = require("react/jsx-runtime");
 var TagInputBox = function TagInputBox(_ref) {
   var className = _ref.className,
