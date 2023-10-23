@@ -2,6 +2,9 @@
   "name": "tag-input-box",
   "version": "0.3.1",
   "author": "adam1lake",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": ["react", "input", "tag", "tags", "list"],
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -11,8 +14,7 @@
     "url": "git+https://github.com/adam1lake/Tag-Input-Box.git"
   },
   "dependencies": {
-    "prop-types": "^15.8.1",
-    "react-scripts": "^5.0.1"
+    "prop-types": "^15.8.1"
   },
   "scripts": {
     "dev": "react-scripts start",
@@ -50,7 +52,8 @@
     "install": "^0.13.0",
     "npm": "^10.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -1,5 +1,5 @@
 import TagInputBox from "./lib/components/TagInputBox";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const isEmailValid = input => /^[^@]+@[^@]+\.[^@]+$/.test(input);
 
