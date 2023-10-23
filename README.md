@@ -76,14 +76,19 @@ them.
 * Pressing **Backspace** when the input is empty will make the last tag editable.
 * Pressing **CTRL** and **Backspace** does the same as clicking the **X**.
 
-## CSS classnames
-You have the option to pass a classname to the component. This will be applied to the container div. 
-This is not always necessary, as you can target different parts of the component with the following class names:
+## CSS Classes
+You have the option to pass a classname to the component. This will be applied to the container div. You can then use 
+the selectors in the table below.
+(This is not always necessary, as you may be able to target different parts of the component with their class names).
 
-| CSS Selector        | Target Element | Explanation                                                       |
-|---------------------|----------------|-------------------------------------------------------------------|
-| .TIB_Container      | Container div  | This includes everything: the input and p elements.               |
-| .TIB_InputContainer | Input and tags | This includes the input box (identifiable by the visible border). |
-| .TIB_Label          | Label          | The label element only.                                           |
-| .TIB_Tag            | Tags           | All tags within the input container.                              |
-| .TIB_XButton        | the X button   | The clear "X" button to the right of the input.                   |
+```jsx
+<TagInputBox className="Example" ... />
+```
+
+| Element Class       | CSS Selector               | Target Element | Explanation                                                       |
+|---------------------|----------------------------|----------------|-------------------------------------------------------------------|
+| .TIB_Container      | .Example                   | Container div  | This includes everything: the input and p elements.               |
+| .TIB_InputContainer | .Example > div             | Input and tags | This includes the input box (identifiable by the visible border). |
+| .TIB_Label          | .Example p                 | Label          | The label element only.                                           |
+| .TIB_Tag            | .Example > div > div > div | Tags           | All tags within the input container.                              |
+| .TIB_XButton        | .Example button            | the X button   | The clear "X" button to the right of the input.                   |
