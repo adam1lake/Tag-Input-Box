@@ -5,15 +5,16 @@ contained within the input box, and can be selected/modified/deleted. There are 
 these actions with ease.
 , label, separators, forceLowerCase
 ## Props
-| Name           | Explanation                                                                          | Type     | Required | Default       |
-|----------------|--------------------------------------------------------------------------------------|----------|----------|---------------|
-| className      | Class name for the ```<input />``` element.                                          | string   | No       | ""            |
-| items          | The state variable for the list of tags.                                             | array    | Yes      | -             |
-| setItems       | The set function for the items state.                                                | function | Yes      | -             |
-| validator      | Used to perform validation on the inputs before adding them as tags.                 | function | No       | `() => true`  |
-| label          | The text label displayed above the input.                                            | string   | No       | `false`       |
-| separators     | A list of acceptable separators between tags.                                        | array    | No       | `[","]`       |
-| forceLowerCase | Determines if tags are set to lower case when submitted.                             | boolean  | No       | `false`       |
+| Name           | Explanation                                                          | Type     | Required | Default      |
+|----------------|----------------------------------------------------------------------|----------|----------|--------------|
+| className      | Class name for the container div.                                    | string   | No       | ""           |
+| items          | The state variable for the list of tags.                             | array    | Yes      | -            |
+| setItems       | The set function for the items state.                                | function | Yes      | -            |
+| validator      | Used to perform validation on the inputs before adding them as tags. | function | No       | `() => true` |
+| label          | The text label displayed with the input.                             | string   | No       | `false`      |
+| labelPosition  | "Top" or "Bottom" relative to the input.                             | string   | No       | `false`      |
+| separators     | A list of acceptable separators between tags.                        | array    | No       | `[","]`      |
+| forceLowerCase | Determines if tags are set to lower case when submitted.             | boolean  | No       | `false`      |
 
 ## Controlling State
 you must use a state variable to control the input. Simply create a
@@ -74,3 +75,15 @@ them.
 * Pressing **Delete** when the input is empty will delete all selected tags.
 * Pressing **Backspace** when the input is empty will make the last tag editable.
 * Pressing **CTRL** and **Backspace** does the same as clicking the **X**.
+
+## CSS classnames
+You have the option to pass a classname to the component. This will be applied to the container div. 
+This is not always necessary, as you can target different parts of the component with the following class names:
+
+| CSS Selector        | Target Element | Explanation                                                       |
+|---------------------|----------------|-------------------------------------------------------------------|
+| .TIB_Container      | Container div  | This includes everything: the input and p elements.               |
+| .TIB_InputContainer | Input and tags | This includes the input box (identifiable by the visible border). |
+| .TIB_Label          | Label          | The label element only.                                           |
+| .TIB_Tag            | Tags           | All tags within the input container.                              |
+| .TIB_XButton        | the X button   | The clear "X" button to the right of the input.                   |

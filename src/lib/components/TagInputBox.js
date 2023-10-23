@@ -3,18 +3,10 @@ import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import { regexEsc } from "../utils";
 
-const TagInputBox = ({ className, items, setItems, validator, label, separators, forceLowerCase }) => {
+const TagInputBox = ({ className, items, setItems, validator=() => true, label="", labelPosition="bottom", separators=[","], forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
     const [inputLock, setInputLock] = useState(false);
-
-    // If no validator is provided, set it as a function that always returns true
-    if (typeof validator === "undefined") {
-        validator = () => true;
-    }
-
-    // If no separators are provided, the default is a comma
-    separators = separators || [","];
 
     const splitterRegex = new RegExp(separators.map(char => regexEsc(char)).join("|"));
 
@@ -34,6 +26,7 @@ const TagInputBox = ({ className, items, setItems, validator, label, separators,
             // If backspace is clicked and there is no input
             if (textInput === "") {
                 if (e.ctrlKey) {
+                    // If CTRL is being held, remove the selected items
                     // If CTRL is being held, remove the selected items
                     if (selectedItems.length > 0) {
                         // If items are selected, delete all the selected items
@@ -170,16 +163,20 @@ const TagInputBox = ({ className, items, setItems, validator, label, separators,
         setTextInput(remainingInput.join(","));
     }
 
+    if (!items || !setItems) return "";
+
     return (
-        <>
-            { label &&
+        <div className={ `TIB_Container${ className ? ` ${ className }` : "" }${ labelPosition === "bottom" ? " TIB_Container_Reverse" : "" }` }>
+            { label !== "" &&
                 <p
-                    className="Label"
+                    className="TIB_Label"
                     data-testid="tag-input-label"
-                >{ label }</p>
+                >
+                    { label }
+                </p>
             }
             <div
-                className={ `TagInputBox${ className ? ` ${ className }` : "" }` }
+                className="TIB_InputContainer"
                 onClick={ e => handleContainerClick(e) }
                 data-testid="tag-input-container"
             >
@@ -189,7 +186,7 @@ const TagInputBox = ({ className, items, setItems, validator, label, separators,
                             <div
                                 key={ idx }
                                 onClick={ (e) => handleItemClick(e, item) }
-                                className={ `${ selectedItems.includes(item) ? "SelectedItem" : "UnselectedItem" }${ idx === items.length - 1 ? " LastItem" : "" }` }
+                                className={ `TIB_Tag ${ selectedItems.includes(item) ? "TIB_SelectedItem" : "TIB_UnselectedItem" }${ idx === items.length - 1 ? " TIB_LastItem" : "" }` }
                                 data-testid={ `input-tag-${ idx + 1 }` }
                             >
                                 { item }
@@ -208,11 +205,12 @@ const TagInputBox = ({ className, items, setItems, validator, label, separators,
                 <button
                     onClick={ handleCloseClick }
                     data-testid="tag-clear-icon"
+                    className="TIB_XButton"
                 >
                     x
                 </button>
             </div>
-        </>
+        </div>
     )
 }
 
@@ -222,6 +220,7 @@ TagInputBox.propTypes = {
     setItems: PropTypes.func.isRequired,
     validator: PropTypes.func,
     label: PropTypes.string,
+    labelPosition: PropTypes.string,
     separators: PropTypes.array,
     forceLowerCase: PropTypes.bool
 }
