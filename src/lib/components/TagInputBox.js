@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import { regexEsc } from "../utils";
 
-const TagInputBox = ({ className, items, setItems, validator=() => true, label="", labelPosition="bottom", separators=[","], forceLowerCase }) => {
+const TagInputBox = ({ className, items, setItems, validator, label, labelPosition, separators, forceLowerCase }) => {
     const [textInput, setTextInput] = useState("");
     const [selectedItems, setSelectedItems] = useState([]);
     const [inputLock, setInputLock] = useState(false);
@@ -166,8 +166,8 @@ const TagInputBox = ({ className, items, setItems, validator=() => true, label="
     if (!items || !setItems) return "";
 
     return (
-        <div className={ `TIB_Container${ className ? ` ${ className }` : "" }${ labelPosition === "bottom" ? " TIB_Container_Reverse" : "" }` }>
-            { label !== "" &&
+        <div className={ `TIB_Container ${ className }${ labelPosition === "bottom" ? " TIB_Container_Reverse" : "" }` }>
+            { typeof(label) !== "undefined" &&
                 <p
                     className="TIB_Label"
                     data-testid="tag-input-label"
@@ -214,13 +214,22 @@ const TagInputBox = ({ className, items, setItems, validator=() => true, label="
     )
 }
 
+TagInputBox.defaultProps = {
+    className: "",
+    validator: () => true,
+    label: undefined,
+    labelPosition: "bottom",
+    separators: [","],
+    forceLowerCase: false
+}
+
 TagInputBox.propTypes = {
     className: PropTypes.string,
     items: PropTypes.array.isRequired,
     setItems: PropTypes.func.isRequired,
     validator: PropTypes.func,
     label: PropTypes.string,
-    labelPosition: PropTypes.string,
+    labelPosition: PropTypes.oneOf(["top", "bottom"]),
     separators: PropTypes.array,
     forceLowerCase: PropTypes.bool
 }
