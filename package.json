@@ -1,14 +1,23 @@
 {
   "name": "tag-input-box",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "adam1lake",
   "publishConfig": {
     "access": "public"
   },
-  "keywords": ["react", "input", "tag", "tags", "list"],
+  "keywords": [
+    "react",
+    "input",
+    "tag",
+    "tags",
+    "list"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adam1lake/Tag-Input-Box.git"

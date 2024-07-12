@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 require("./styles.css");
 var _propTypes = _interopRequireDefault(require("prop-types"));
@@ -33,10 +35,10 @@ var TagInputBox = function TagInputBox(_ref) {
     _useState6 = (0, _slicedToArray2.default)(_useState5, 2),
     inputLock = _useState6[0],
     setInputLock = _useState6[1];
+  var inputRef = (0, _react.useRef)(null);
   var splitterRegex = new RegExp(separators.map(function (char) {
     return (0, _utils.regexEsc)(char);
   }).join("|"));
-  var inputRef = (0, _react.useRef)(null);
 
   // Deletes all selected items
   var deleteAllSelected = function deleteAllSelected() {
@@ -47,45 +49,118 @@ var TagInputBox = function TagInputBox(_ref) {
   };
 
   // Called on key down on the input box
-  var handleKeyPress = function handleKeyPress(e) {
-    var key = e.key;
-    if (key === "Backspace") {
-      // If backspace is clicked and there is no input
-      if (textInput === "") {
-        if (e.ctrlKey) {
-          // If CTRL is being held, remove the selected items
-          // If CTRL is being held, remove the selected items
-          if (selectedItems.length > 0) {
-            // If items are selected, delete all the selected items
+  var handleKeyPress = /*#__PURE__*/function () {
+    var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(e) {
+      var key, clipboardText;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            key = e.key;
+            if (!(key === "Backspace")) {
+              _context.next = 5;
+              break;
+            }
+            // If backspace is clicked and there is no input
+            if (textInput === "") {
+              if (e.ctrlKey) {
+                // If CTRL is being held, remove the selected items
+                // If CTRL is being held, remove the selected items
+                if (selectedItems.length > 0) {
+                  // If items are selected, delete all the selected items
+                  deleteAllSelected();
+                } else {
+                  // If no items are selected, delete the last item
+                  setItems(items.slice(0, items.length - 1));
+                }
+              } else if (items.length > 0) {
+                // If CTRL is not being held, make the last item editable
+                setEditableItem(items[items.length - 1]);
+                setInputLock(true);
+              }
+            }
+            _context.next = 34;
+            break;
+          case 5:
+            if (!(key === "Enter")) {
+              _context.next = 9;
+              break;
+            }
+            // If enter is pressed, remove the pending update to "override" it and save the item
+            handleInputChange(textInput, true);
+            _context.next = 34;
+            break;
+          case 9:
+            if (!(key === "Delete" && textInput === "")) {
+              _context.next = 13;
+              break;
+            }
+            // If delete is pressed and there is no input, remove the selected items
             deleteAllSelected();
-          } else {
-            // If no items are selected, delete the last item
-            setItems(items.slice(0, items.length - 1));
-          }
-        } else {
-          if (items.length > 0) {
-            // If CTRL is not being held, make the last item editable
-            setEditableItem(items[items.length - 1]);
-            setInputLock(true);
-          }
+            _context.next = 34;
+            break;
+          case 13:
+            if (!(textInput === "")) {
+              _context.next = 34;
+              break;
+            }
+            if (!(key.toLowerCase() === "a" && e.ctrlKey)) {
+              _context.next = 18;
+              break;
+            }
+            // If CTRL+A is pressed, select all the items
+            setSelectedItems(items);
+            _context.next = 34;
+            break;
+          case 18:
+            if (!(key.toLowerCase() === "c" && e.ctrlKey)) {
+              _context.next = 23;
+              break;
+            }
+            _context.next = 21;
+            return navigator.clipboard.writeText(selectedItems.join(","));
+          case 21:
+            _context.next = 34;
+            break;
+          case 23:
+            if (!(key.toLowerCase() === "x" && e.ctrlKey)) {
+              _context.next = 29;
+              break;
+            }
+            _context.next = 26;
+            return navigator.clipboard.writeText(selectedItems.join(","));
+          case 26:
+            deleteAllSelected();
+            _context.next = 34;
+            break;
+          case 29:
+            if (!(key.toLowerCase() === "v" && e.ctrlKey)) {
+              _context.next = 34;
+              break;
+            }
+            _context.next = 32;
+            return navigator.clipboard.readText();
+          case 32:
+            clipboardText = _context.sent;
+            handleInputChange(clipboardText, true);
+          case 34:
+          case "end":
+            return _context.stop();
         }
-      }
-    } else if (key === "Enter") {
-      // If enter is clicked, remove the pending update to "override" it and save the item
-      handleInputChange(textInput, true);
-    } else if (key === "Delete" && textInput === "") {
-      // If delete is clicked and there is no input, remove the selected items
-      deleteAllSelected();
-    }
-  };
+      }, _callee);
+    }));
+    return function handleKeyPress(_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   // Makes the specified item available for editing by moving it into the input box
-  var setEditableItem = function setEditableItem(value) {
+  var setEditableItem = function setEditableItem(value, tempItems) {
+    tempItems = tempItems || items;
     // Sets the input box to this item
     setTextInput(value);
 
     // Removes this item from the items list
-    setItems(items.filter(function (item) {
+    setItems(tempItems.filter(function (item) {
       return item !== value;
     }));
 
@@ -119,8 +194,9 @@ var TagInputBox = function TagInputBox(_ref) {
           return item !== clickedItem;
         }));
       } else {
-        // Otherwise, make it editable
-        setEditableItem(clickedItem);
+        // Otherwise, try to submit the current text, then make the selected item editable
+        var tempItems = handleInputChange("".concat(textInput), true);
+        setEditableItem(clickedItem, tempItems);
       }
     }
     // Returns focus to the input
@@ -174,25 +250,25 @@ var TagInputBox = function TagInputBox(_ref) {
     var entries = newInput.split(splitterRegex).filter(function (item) {
       return item !== "";
     });
-    var validItems = [];
+    var newItems = (0, _toConsumableArray2.default)(items);
 
     // Finds valid items, and adds them to the validItems array
     // Invalid items are left in remaining input and will stay in the input box
     var remainingInput = entries.flatMap(function (item) {
       if (validator(item.trim())) {
         // Adds to validItems if this item is not already in the list
-        !items.includes(item) && validItems.push(item.trim());
+        !items.includes(item) && newItems.push(item.trim());
         // Removes from the input
         return [];
       }
       return item;
     });
-    if (validItems.length > 0) {
-      // Updates the items state provided by the parent
-      setItems([].concat((0, _toConsumableArray2.default)(items), validItems));
-    }
+    // Updates the items state provided by the parent
+    setItems(newItems);
+
     // Updates the text input removing any saved items
     setTextInput(remainingInput.join(","));
+    return newItems;
   };
   if (!items || !setItems) return "";
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -205,6 +281,9 @@ var TagInputBox = function TagInputBox(_ref) {
       className: "TIB_InputContainer",
       onClick: function onClick(e) {
         return handleContainerClick(e);
+      },
+      onKeyDown: function onKeyDown(e) {
+        return handleKeyPress(e);
       },
       "data-testid": "tag-input-container",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {

@@ -72,9 +72,11 @@ Tags can be modified/deleted using the following built-in functionality:
 * Holding **CTRL** and clicking a tag will select it.
 * Clicking the **X**: if there is text in the input box, it will clear it. If there are selected tags, it will delete 
 them.
+* 
 * Pressing **Delete** when the input is empty will delete all selected tags.
 * Pressing **Backspace** when the input is empty will make the last tag editable.
 * Pressing **CTRL** and **Backspace** does the same as clicking the **X**.
+* Presing **CTRL** **C**, **V** or **X** copies, pastes or cuts either text or tags.
 
 ## CSS Classes
 You have the option to pass a classname to the component. This will be applied to the container div. You can then use 
