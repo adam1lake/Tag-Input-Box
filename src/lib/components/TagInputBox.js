@@ -8,9 +8,9 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
     const [selectedItems, setSelectedItems] = useState([]);
     const [inputLock, setInputLock] = useState(false);
 
-    const splitterRegex = new RegExp(separators.map(char => regexEsc(char)).join("|"));
-
     const inputRef = useRef(null);
+
+    const splitterRegex = new RegExp(separators.map(char => regexEsc(char)).join("|"));
 
     // Deletes all selected items
     const deleteAllSelected = () => {
@@ -19,7 +19,7 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
     }
 
     // Called on key down on the input box
-    const handleKeyPress = e => {
+    const handleKeyPress = async e => {
         const key = e.key;
 
         if (key === "Backspace") {
@@ -36,30 +36,47 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
                         setItems(items.slice(0, items.length - 1));
                     }
 
-                } else {
-                    if (items.length > 0) {
-                        // If CTRL is not being held, make the last item editable
-                        setEditableItem(items[items.length - 1]);
-                        setInputLock(true);
-                    }
+                } else if (items.length > 0) {
+                    // If CTRL is not being held, make the last item editable
+                    setEditableItem(items[items.length - 1]);
+                    setInputLock(true);
                 }
             }
         } else if (key === "Enter") {
-            // If enter is clicked, remove the pending update to "override" it and save the item
+            // If enter is pressed, remove the pending update to "override" it and save the item
             handleInputChange(textInput, true);
         } else if (key === "Delete" && textInput === "") {
-            // If delete is clicked and there is no input, remove the selected items
+            // If delete is pressed and there is no input, remove the selected items
             deleteAllSelected();
+        } else {
+            if (textInput === "") {
+                if (key.toLowerCase() === "a" && e.ctrlKey) {
+                    // If CTRL+A is pressed, select all the items
+                    setSelectedItems(items);
+                } else if (key.toLowerCase() === "c" && e.ctrlKey) {
+                    // If CTRL+C is pressed, copy the selected items (comma-separated)
+                    await navigator.clipboard.writeText(selectedItems.join(","));
+                } else if (key.toLowerCase() === "x" && e.ctrlKey) {
+                    // If CTRL+X is pressed, copy the selected items (comma-separated) then delete them
+                    await navigator.clipboard.writeText(selectedItems.join(","));
+                    deleteAllSelected();
+                } else if (key.toLowerCase() === "v" && e.ctrlKey) {
+                    // If CTRL+V is pressed, attempt to submit the clipboard text as an item
+                    const clipboardText = await navigator.clipboard.readText();
+                    handleInputChange(clipboardText, true);
+                }
+            }
         }
     }
 
     // Makes the specified item available for editing by moving it into the input box
-    const setEditableItem = value => {
+    const setEditableItem = (value, tempItems) => {
+        tempItems = tempItems || items;
         // Sets the input box to this item
         setTextInput(value);
 
         // Removes this item from the items list
-        setItems(items.filter(item => item !== value));
+        setItems(tempItems.filter(item => item !== value));
 
         // Removes this item from the selected items
         setSelectedItems(selectedItems.filter(item => item !== value));
@@ -85,8 +102,9 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
                 // If the item is selected, de-select it
                 setSelectedItems(selectedItems.filter(item => item !== clickedItem));
             } else {
-                // Otherwise, make it editable
-                setEditableItem(clickedItem);
+                // Otherwise, try to submit the current text, then make the selected item editable
+                const tempItems = handleInputChange(`${textInput}`, true);
+                setEditableItem(clickedItem, tempItems);
             }
         }
         // Returns focus to the input
@@ -142,25 +160,26 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
         // Splits on the separators
         const entries = newInput.split(splitterRegex).filter(item => item !== "");
 
-        const validItems = [];
+        let newItems = [...items];
 
         // Finds valid items, and adds them to the validItems array
         // Invalid items are left in remaining input and will stay in the input box
         const remainingInput = entries.flatMap(item => {
             if (validator(item.trim())) {
                 // Adds to validItems if this item is not already in the list
-                !items.includes(item) && validItems.push(item.trim());
+                !items.includes(item) && newItems.push(item.trim());
                 // Removes from the input
                 return [];
             }
             return item;
         });
-        if (validItems.length > 0) {
-            // Updates the items state provided by the parent
-            setItems([...items, ...validItems]);
-        }
+        // Updates the items state provided by the parent
+        setItems(newItems);
+
         // Updates the text input removing any saved items
         setTextInput(remainingInput.join(","));
+
+        return newItems;
     }
 
     if (!items || !setItems) return "";
@@ -178,6 +197,7 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
             <div
                 className="TIB_InputContainer"
                 onClick={ e => handleContainerClick(e) }
+                onKeyDown={ e => handleKeyPress(e) }
                 data-testid="tag-input-container"
             >
                 <div>
