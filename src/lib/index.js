@@ -1,3 +1,3 @@
-import TagInputBox from "./components/TagInputBox";
+import TagInputBox from "./components/TagInputBox.jsx";
 
 export { TagInputBox };

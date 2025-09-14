@@ -26,9 +26,11 @@
     "prop-types": "^15.8.1"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "test": "react-scripts test",
-    "build": "rm -rf dist && cross-env NODE_ENV=production babel src/lib --out-dir dist --copy-files"
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test": "vitest"
   },
   "eslintConfig": {
     "extends": [
@@ -49,20 +51,22 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.0",
-    "@babel/polyfill": "^7.12.1",
-    "@babel/preset-env": "^7.22.20",
-    "@babel/preset-react": "^7.22.15",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.5.1",
-    "cross-env": "^7.0.3",
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^5.0.2",
     "install": "^0.13.0",
-    "npm": "^10.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1"
+    "jsdom": "^27.0.0",
+    "npm": "^11.6.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "vite": "^7.1.5",
+    "vite-plugin-svgr": "^4.5.0",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "react": "^18.2.0",

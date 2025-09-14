@@ -167,14 +167,18 @@ const TagInputBox = ({ className, items, setItems, validator, label, labelPositi
         const remainingInput = entries.flatMap(item => {
             if (validator(item.trim())) {
                 // Adds to validItems if this item is not already in the list
-                !items.includes(item) && newItems.push(item.trim());
+                if (!items.includes(item)) {
+                    newItems.push(item.trim());
+                }
                 // Removes from the input
                 return [];
             }
             return item;
         });
         // Updates the items state provided by the parent
-        setItems(newItems);
+        if (newItems.length > items.length) {
+            setItems(newItems);
+        }
 
         // Updates the text input removing any saved items
         setTextInput(remainingInput.join(","));

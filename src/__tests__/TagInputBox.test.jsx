@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, findByDisplayValue } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import TagInputBox from "../lib/components/TagInputBox";
+import { vi } from "vitest";
+import TagInputBox from "../lib/components/TagInputBox.jsx";
 import userEvent from "@testing-library/user-event";
 import { isEmailValid } from "../lib/utils";
 
@@ -28,6 +29,7 @@ describe("tag input box", () => {
                 validator={ () => {} }
                 label={ label }
                 forceLowerCase={ true }
+                separators={[","]}
             />
         );
 
@@ -59,13 +61,14 @@ describe("tag input box", () => {
         const startingEmails = sampleValidItems.slice(2, 4);
         const testValidEmail = sampleValidItems[1];
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ isEmailValid }
+                separators={[","]}
             />
         );
 
@@ -89,7 +92,7 @@ describe("tag input box", () => {
         const startingEmails = sampleValidItems.slice(0, 2);
         const testInvalidEmail = sampleInvalidItems[1];
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
@@ -120,7 +123,7 @@ describe("tag input box", () => {
         const startingEmails = [sampleValidItems[0]];
         const testValidEmails = sampleValidItems.slice(1, 4);
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
@@ -142,13 +145,14 @@ describe("tag input box", () => {
     });
 
     it("does not add multiple inputted invalid items (comma-separated) as new tags", async () => {
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
                 items={ sampleValidItems.slice(1, 4) }
                 setItems={ setItems }
                 validator={ isEmailValid }
+                separators={[","]}
             />
         );
 
@@ -165,13 +169,14 @@ describe("tag input box", () => {
     it("handles a selection of valid and invalid items", async () => {
         const testEmails = shuffle([...sampleInvalidItems, ...sampleValidItems]);
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
                 items={ [] }
                 setItems={ setItems }
                 validator={ isEmailValid }
+                separators={[","]}
             />
         );
 
@@ -196,7 +201,7 @@ describe("tag input box", () => {
     });
 
     it("does not add duplicate emails", async () => {
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         // Starts with all valid emails as tags
         render(
@@ -223,13 +228,14 @@ describe("tag input box", () => {
         const startingEmails = sampleValidItems.slice(0, 3);
         const testValidEmail = sampleValidItems[3];
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
                 items={ startingEmails }
                 setItems={ setItems }
                 validator={ isEmailValid }
+                separators={[","]}
             />
         );
 
@@ -252,13 +258,14 @@ describe("tag input box", () => {
     it("makes the last item editable when backspace is pressed", async () => {
         const startingEmail = sampleValidItems[3];
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
                 items={ [startingEmail] }
                 setItems={ setItems }
                 validator={ isEmailValid }
+                separators={[","]}
             />
         );
 
@@ -297,7 +304,7 @@ describe("tag input box", () => {
         const separators = [",", "&", ";", "-"];
         const testString = sampleRandomItems.map((item, idx) => item + separators[idx]).join("");
 
-        const setItems = jest.fn();
+        const setItems = vi.fn();
 
         render(
             <TagInputBox
